@@ -1,13 +1,96 @@
 const request = require("supertest");
-import { getCarValue } from "../src/controller/api1Controller";
 
 describe("API 1", () => {
-  it("Sunny day scenario", () => {
-    const model = "Civic";
-    const year = 2020;
-    const expectedOutput = 6620;
+    it("Sunny day scenario", () => {
+        const model = "Civic";
+        const year = 2020;
+        const expectedOutput = 6620;
 
-    const result = getCarValue(model, year);
-    expect(result).toEqual(expectedOutput);
-  });
+        return request("http://localhost:4000/api/1")
+            .get('/')
+            .send({ model: model, year: year })
+            .expect(200)
+            .then(res => {
+                expect(res.body.carValue).toEqual(expectedOutput)
+            })
+    });
+    it("Empty json", () => {
+        return request("http://localhost:4000/api/1")
+            .get('/')
+            .send({})
+            .expect(400)
+            .then(res => {
+                expect(res.body.error).toEqual("missing params")
+            })
+    });
+    it("Only model", () => {
+        return request("http://localhost:4000/api/1")
+            .get('/')
+            .send({ model: "Civic" })
+            .expect(400)
+            .then(res => {
+                expect(res.body.error).toEqual("missing params")
+            })
+    });
+    it("Only year", () => {
+        return request("http://localhost:4000/api/1")
+            .get('/')
+            .send({ year: 2020 })
+            .expect(400)
+            .then(res => {
+                expect(res.body.error).toEqual("missing params")
+            })
+    });
+    it("Year is string", () => {
+        const model = "Civic";
+        const year = "wrong format";
+
+        return request("http://localhost:4000/api/1")
+            .get('/')
+            .send({ model: model, year: year })
+            .expect(400)
+            .then(res => {
+                expect(res.body.error).toEqual("year is not a number")
+            })
+    });
+    it("Model has symbols and spaces", () => {
+        const model = ` C{)iv .,/ic .'&`;
+        const year = 2020;
+        const expectedOutput = 6620;
+
+        return request("http://localhost:4000/api/1")
+            .get('/')
+            .send({ model: model, year: year })
+            .expect(200)
+            .then(res => {
+                expect(res.body.carValue).toEqual(expectedOutput)
+            })
+    });
+    it("Year has decimals", () => {
+        const model = "Civic";
+        const year = 20.20;
+
+        return request("http://localhost:4000/api/1")
+            .get('/')
+            .send({ model: model, year: year })
+            .expect(400)
+            .then(res => {
+                expect(res.body.error).toEqual("year can't have decimal points")
+            })
+    });
 });
+
+
+
+/*
+
+sunny day: correct info
+missing params
+year not number
+model not string
+model has symbols
+model has space
+year has decimals
+
+
+*/

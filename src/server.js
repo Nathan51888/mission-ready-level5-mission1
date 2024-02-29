@@ -6,6 +6,9 @@ app.use(express.json());
 const api1Router = require("./routes/api1Router");
 
 app.use("/api/1", api1Router);
+app.get("/", (req, res) => {
+  res.send("Hey backend is running yoooooo~😉 ya see its up");
+});
 
 const port = 4000;
 app
