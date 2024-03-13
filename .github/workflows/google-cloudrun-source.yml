@@ -68,6 +68,9 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Run server
+        run: npm run dev
+
       - name: Test
         run: npm run test
 
