@@ -6,8 +6,8 @@ describe("API 1", () => {
         const year = 2020;
         const expectedOutput = 6620;
 
-        return request("http://localhost:4000/api/1")
-            .get('/')
+        return request("http://localhost:8080/api/1")
+            .post('/')
             .send({ model: model, year: year })
             .expect(200)
             .then(res => {
@@ -15,8 +15,8 @@ describe("API 1", () => {
             })
     });
     it("Empty json", () => {
-        return request("http://localhost:4000/api/1")
-            .get('/')
+        return request("http://localhost:8080/api/1")
+            .post('/')
             .send({})
             .expect(400)
             .then(res => {
@@ -24,8 +24,8 @@ describe("API 1", () => {
             })
     });
     it("Only model", () => {
-        return request("http://localhost:4000/api/1")
-            .get('/')
+        return request("http://localhost:8080/api/1")
+            .post('/')
             .send({ model: "Civic" })
             .expect(400)
             .then(res => {
@@ -33,8 +33,8 @@ describe("API 1", () => {
             })
     });
     it("Only year", () => {
-        return request("http://localhost:4000/api/1")
-            .get('/')
+        return request("http://localhost:8080/api/1")
+            .post('/')
             .send({ year: 2020 })
             .expect(400)
             .then(res => {
@@ -45,8 +45,8 @@ describe("API 1", () => {
         const model = "Civic";
         const year = "wrong format";
 
-        return request("http://localhost:4000/api/1")
-            .get('/')
+        return request("http://localhost:8080/api/1")
+            .post('/')
             .send({ model: model, year: year })
             .expect(400)
             .then(res => {
@@ -58,8 +58,8 @@ describe("API 1", () => {
         const year = 2020;
         const expectedOutput = 6620;
 
-        return request("http://localhost:4000/api/1")
-            .get('/')
+        return request("http://localhost:8080/api/1")
+            .post('/')
             .send({ model: model, year: year })
             .expect(200)
             .then(res => {
@@ -70,8 +70,8 @@ describe("API 1", () => {
         const model = "Civic";
         const year = 20.20;
 
-        return request("http://localhost:4000/api/1")
-            .get('/')
+        return request("http://localhost:8080/api/1")
+            .post('/')
             .send({ model: model, year: year })
             .expect(400)
             .then(res => {
