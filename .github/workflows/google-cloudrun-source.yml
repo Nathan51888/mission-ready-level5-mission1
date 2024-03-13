@@ -56,7 +56,23 @@ env:
   REGION: us-central1 # TODO: update Cloud Run service region
 
 jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.2
+
+      - name: Setup Node
+        uses: actions/setup-node@v4.0.2
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Test
+        run: npm run test
+
   deploy:
+    needs: test
     # Add 'id-token' with the intended permissions for workload identity federation
     permissions:
       contents: 'read'
@@ -64,9 +80,6 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
       - name: Google Auth
         id: auth
         uses: 'google-github-actions/auth@v2.1.2'
