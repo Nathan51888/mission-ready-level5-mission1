@@ -10,7 +10,7 @@ app.get("/", (req, res) => {
   res.send("Hey backend is running yoooooo~😉 ya see its up");
 });
 
-const port = 4000;
+const port = process.env.port || 8080;
 app
   .listen(port, () => {
     console.log(`Server is live at http://localhost:${port}`);
